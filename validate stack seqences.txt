@@ -1,0 +1,21 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> stack = new ArrayDeque<>();
+        int j = 0; // Pointer for popped array
+
+        for (int val : pushed) {
+            stack.push(val);
+            // Pop matching elements as long as stack top matches popped[j]
+            while (!stack.isEmpty() && stack.peek() == popped[j]) {
+                stack.pop();
+                j++;
+            }
+        }
+
+        // If all elements in popped were matched, j will equal popped.length
+        return j == popped.length;
+    }
+}
