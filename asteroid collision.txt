@@ -1,0 +1,37 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Deque<Integer> stack = new ArrayDeque<>();
+
+        for (int ast : asteroids) {
+            boolean alive = true;
+
+            // Collision condition: Top of stack moves right (> 0) and current asteroid moves left (< 0)
+            while (alive && ast < 0 && !stack.isEmpty() && stack.peek() > 0) {
+                int top = stack.peek();
+                if (top < -ast) {
+                    stack.pop(); // Top asteroid explodes, current continues left
+                } else if (top == -ast) {
+                    stack.pop(); // Both asteroids explode
+                    alive = false;
+                } else {
+                    alive = false; // Current asteroid explodes
+                }
+            }
+
+            if (alive) {
+                stack.push(ast);
+            }
+        }
+
+        // Convert stack to result array
+        int[] result = new int[stack.size()];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = stack.pop();
+        }
+
+        return result;
+    }
+}
