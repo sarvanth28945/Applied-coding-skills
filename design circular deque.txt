@@ -1,0 +1,68 @@
+class MyCircularDeque {
+    private int[] deque;
+    private int front;
+    private int rear;
+    private int size;
+    private int capacity;
+
+    public MyCircularDeque(int k) {
+        capacity = k;
+        deque = new int[k];
+        front = 0;
+        rear = 0;
+        size = 0;
+    }
+    
+    public boolean insertFront(int value) {
+        if (isFull()) return false;
+        // Move front index backward circularly
+        front = (front - 1 + capacity) % capacity;
+        deque[front] = value;
+        size++;
+        return true;
+    }
+    
+    public boolean insertLast(int value) {
+        if (isFull()) return false;
+        // Insert at current rear index, then move rear forward circularly
+        deque[rear] = value;
+        rear = (rear + 1) % capacity;
+        size++;
+        return true;
+    }
+    
+    public boolean deleteFront() {
+        if (isEmpty()) return false;
+        // Move front index forward circularly
+        front = (front + 1) % capacity;
+        size--;
+        return true;
+    }
+    
+    public boolean deleteLast() {
+        if (isEmpty()) return false;
+        // Move rear index backward circularly
+        rear = (rear - 1 + capacity) % capacity;
+        size--;
+        return true;
+    }
+    
+    public int getFront() {
+        if (isEmpty()) return -1;
+        return deque[front];
+    }
+    
+    public int getRear() {
+        if (isEmpty()) return -1;
+        // Rear points to the next available slot, so actual last element is at rear - 1
+        return deque[(rear - 1 + capacity) % capacity];
+    }
+    
+    public boolean isEmpty() {
+        return size == 0;
+    }
+    
+    public boolean isFull() {
+        return size == capacity;
+    }
+}
